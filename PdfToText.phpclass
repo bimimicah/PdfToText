@@ -1274,6 +1274,7 @@ class  PdfToText 	extends PdfObjectBase
 	protected		$AllowedExecutionTime ;
 
 	// Font mappings
+	/** @var false|\PdfTexterFontTable */
 	protected 		$FontTable			=  false ;
 	// Extra Adobe standard font mappings (for character names of the form "/axxx" for example)
 	protected		$AdobeExtraMappings		=  array ( ) ;
@@ -1283,6 +1284,7 @@ class  PdfToText 	extends PdfObjectBase
 	protected		$PageLocations ;
 	// Encryption data
 	public			$IsEncrypted			=  false ;
+	/** @var false|\PdfEncryptionData */
 	protected		$EncryptionData			=  false ;
 	// A flag coming from the constructor options, telling if enhanced statistics are enabled
 	protected		$EnhancedStatistics ;
@@ -7742,7 +7744,7 @@ abstract class  PdfTexterAdobeMap	extends  PdfTexterCharacterMap
 
 	 *-------------------------------------------------------------------------------------------------------------*/
 	public function  count ( )
-	   { return ( count ( $this -> $Map [ $this -> Variant ] ) ) ; }
+	   { return ( count ( $this -> Map [ $this -> Variant ] ) ) ; }
 
 
 	public function  offsetExists ( $offset )
@@ -9997,7 +9999,7 @@ class  PdfEncryptionData		extends  PdfObjectBase
 				break ;
 
 			default :
-				if  ( self::$DEBUG  >  1 )
+				if  ( PdfToText::$DEBUG  >  1 )
 					error ( new PdfToTextDecodingException ( "Unhandled encryption mode '{$object_data [ 'mode' ]}'", $object_id ) ) ;
 
 				return ( false ) ;
