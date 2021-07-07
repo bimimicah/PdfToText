@@ -10437,7 +10437,7 @@ class  PdftoTextFormDefinitions		// extends		Object
 
 	 *-------------------------------------------------------------------------------------------------------------*/
 	public function  count ( )
-	   { return ( count ( $this - Definitions ) ) ; }
+	   { return ( count ( $this -> Definitions ) ) ; }
 
 
 	public function  getIterator ( )
@@ -10541,7 +10541,7 @@ class  PdfToTextFormDefinition		// extends  Object
 							// "name" attribute" :
 							//	The name of the property, as it will appear in the output object.
 							case	'name' :
-								$name		=  PdfToTextObjectBase::ValidatePhpName ( ( string ) $attribute_value ) ;
+								$name		=  PdfObjectBase::ValidatePhpName ( ( string ) $attribute_value ) ;
 								break ;
 
 							// "separator" attribute :
@@ -10560,7 +10560,7 @@ class  PdfToTextFormDefinition		// extends  Object
 									error ( new PdfToTextFormException ( "Empty \"fields\" attribute in <group> tag." ) ) ;
 
 								foreach  ( $items  as  $item )
-									$fields []	=  PdfToTextObjectBase::ValidatePhpName ( $item ) ;
+									$fields []	=  PdfObjectBase::ValidatePhpName ( $item ) ;
 
 								break ;
 
@@ -10946,7 +10946,7 @@ class  PdfToTextFormFieldDefinition	// extends  Object
 				// "name" attribute :
 				//	Specifies the field name as it will appear in the output class. Must be a valid PHP name.
 				case	'name' :
-					$this -> Name		=  PdfToTextFormDefinition::ValidatePhpName ( ( string ) $attribute_value ) ;
+					$this -> Name		=  PdfObjectBase::ValidatePhpName ( ( string ) $attribute_value ) ;
 					break ;
 
 				// "form-field" attribute :
@@ -11020,7 +11020,7 @@ class  PdfToTextFormFieldDefinition	// extends  Object
 								// "constant" attribute :
 								//	Associated constant.
 								case	'constant' :
-									$constant_name		=  PdfToTextFormDefinition::ValidatePhpName ( ( string ) $attribute_value ) ;
+									$constant_name		=  PdfObjectBase::ValidatePhpName ( ( string ) $attribute_value ) ;
 									break ;
 
 								// Bail out if any unrecognized attribute has been specified
@@ -12708,7 +12708,7 @@ class  PdfToTextCapturedLine			extends		PdfToTextCapturedText
 	public function  __get ( $member )
 	   {
 		if  ( isset ( $this -> ColumnsByNames [ $member ] ) )
-			return ( $this -> Columns [ $this -> ColumnsByNames [ $offset ] ] ) ;
+			return ( $this -> Columns [ $this -> ColumnsByNames [ $member ] ] ) ;
 		else
 			trigger_error ( "Undefined property \"$member\"." ) ;
 	    }
