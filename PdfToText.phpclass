@@ -7345,9 +7345,9 @@ class  PdfTexterUnicodeMap 	extends 	PdfTexterCharacterMap
 
 		// Process beginbfchar/endbfchar constructs
 		if  ( preg_match_all ( '/ beginbfchar \s* (?P<chars> .*?) endbfchar /imsx', $definitions, $char_matches ) )
-		    {
-		    	foreach  ( $char_matches [ 'chars' ]  as  $char_list )
-		    	   {
+		   {
+			foreach  ( $char_matches [ 'chars' ]  as  $char_list )
+			   {
 				// beginbfchar / endbfchar constructs can behave as a kind of beginfbfrange/endbfrange ; example :
 				//	<21> <0009 0020 000d>
 				// means :
@@ -7380,11 +7380,10 @@ class  PdfTexterUnicodeMap 	extends 	PdfTexterCharacterMap
 							$subst	=  PdfTexterAdobeUndocumentedUnicodeMap::$UnicodeMap [ $subst ] ;
 
 						$this -> DirectMap [ $char + $j ]	=  $subst ;
-					    }
-				    }
-
-		    	    }
-		     }
+						}
+					}
+				}
+		    }
 
 		// Process beginbfrange/endbfrange constructs
 		if  ( preg_match_all ( '/ beginbfrange \s* (?P<ranges> .*?) endbfrange /imsx', $definitions, $range_matches ) )
