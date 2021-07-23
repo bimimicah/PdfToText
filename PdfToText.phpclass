@@ -9062,12 +9062,17 @@ class  PdfTexterPageMap		extends  PdfObjectBase
 												$this -> PageContents [ $item ] [ 'contents' ] : array ( ) ;
 					if ( isset ( $this -> PageContents [ $item ] [ 'width' ] ) )
 					   {
-						$this -> PageAttributes [ $page ]		=  array
-						   (
-							'width'			=>  $this -> PageContents [ $item ] [ 'width' ],
-							'height'		=>  $this -> PageContents [ $item ] [ 'height' ]
-						    ) ;
+						$this -> PageAttributes [ $page ][ 'width' ]	=  $this -> PageContents [ $item ] [ 'width' ];
+						$this -> PageAttributes [ $page ][ 'height' ]	=  $this -> PageContents [ $item ] [ 'height' ];
 					    }
+					if ( isset ( $this -> PageContents [ $item ] [ 'fonts' ] ) )
+					   {
+						$this -> PageAttributes [ $page ][ 'fonts' ]	=  $this -> PageContents [ $item ] [ 'fonts' ];
+						}
+					if ( isset ( $this -> PageContents [ $item ] [ 'xobjects' ] ) )
+					   {
+						$this -> PageAttributes [ $page ][ 'xobjects' ]	=  $this -> PageContents [ $item ] [ 'xobjects' ];
+						}
 
 					$page ++ ;
 				    }
@@ -9112,38 +9117,30 @@ class  PdfTexterPageMap		extends  PdfObjectBase
 	public function  GetMappedFonts ( )
 	   {
 		$mapped_fonts	=  array ( ) ;
-		$current_page	=  0 ;
 
-		foreach  ( $this -> PageCatalogs  as  $catalog )
+		foreach  ( $this -> Pages  as  $current_page  =>  $page_object )
 		   {
-			if  ( ! isset ( $this -> PageKids [ $catalog ] ) )
-				continue ;
 
-			foreach  ( $this -> PageKids [ $catalog ] [ 'kids' ]  as  $page_object )
+			if  ( isset ( $this -> PageAttributes [ $current_page ] ) )
 			   {
-				$current_page ++ ;
+				$page_attributes	=  $this -> PageAttributes [ $current_page ] ;
+				$associations	=  array ( ) ;
 
-				if  ( isset ( $this -> PageContents [ $page_object ] ) )
+				if  ( isset ( $page_attributes [ 'fonts' ] ) )
 				   {
-					$page_contents	=  $this -> PageContents [ $page_object ] ;
-					$associations	=  array ( ) ;
-
-					if  ( isset ( $page_contents [ 'fonts' ] ) )
+					foreach  ( $page_attributes [ 'fonts' ]  as  $font_name => $font_object )
 					   {
-						foreach  ( $page_contents [ 'fonts' ]  as  $font_name => $font_object )
-						   {
-							$mapped_fonts []		=  array 
-							   ( 
-								'page'		=>  $current_page, 
-								'xobject-name'	=>  '',
-								'font-name'	=>  $font_name, 
-								'object'	=>  $font_object 
-							    ) ;
+						$mapped_fonts []		=  array 
+						   ( 
+							'page'		=>  $current_page, 
+							'xobject-name'	=>  '',
+							'font-name'	=>  $font_name, 
+							'object'	=>  $font_object 
+						    ) ;
 
-							$associations [ ":$font_name" ]	=  $font_object ;
+						$associations [ ":$font_name" ]	=  $font_object ;
 
-							$this -> __map_recursive ( $current_page, $page_contents [ 'xobjects' ], $mapped_fonts, $associations ) ;
-						    }
+						$this -> __map_recursive ( $current_page, $page_attributes [ 'xobjects' ], $mapped_fonts, $associations ) ;
 					    }
 				    }
 			    }
