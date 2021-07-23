@@ -281,6 +281,8 @@ abstract class  PdfObjectBase		// extends  Object
 	 *-------------------------------------------------------------------------------------------------------------*/
 	protected function  CodePointToUtf8 ( $code )
 	   {
+		if (gettype($code) == "string") return $code;
+
 		if  ( $code )
 		   {
 			$result		=  '' ;
@@ -7708,6 +7710,14 @@ class  PdfTexterEncodingMap 	extends  PdfTexterCharacterMap
 					$this -> Map [ $index ]			=  
 					$this -> SecondaryMap [ $index ]	=  ( integer ) $value ;
 				    }
+				// Most ligatures can be specified as characters joined by underscores (single character ligatures are for compatibility only)
+				else if  ( preg_match ( '/^.(?:_.)+$/i', $item, $match ) )
+				   {
+					$value		=  preg_replace ( "/_/", "", $item ) ;
+
+					$this -> Map [ $index ]			=  
+					$this -> SecondaryMap [ $index ]	=  ( string ) $value ;
+				    }
 				// Otherwise, put a quotation mark instead
 				else
 				   {
@@ -7751,6 +7761,8 @@ class  PdfTexterEncodingMap 	extends  PdfTexterCharacterMap
 				$ord		=  $this -> Map [ $offset ] ;
 			else
 				$ord		=  $offset ;
+
+			if (gettype($ord) == "string") return $ord;
 
 			// Check for final character translations (concerns only a few number of characters)
 			if  ( $this -> Encoding  ==  self::PDF_WIN_ANSI_ENCODING  &&  isset ( PdfTexterAdobeWinAnsiMap::$WinAnsiCharacterMap [0] [ $ord ] ) )
