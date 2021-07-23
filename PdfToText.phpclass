@@ -2100,6 +2100,12 @@ class  PdfToText 	extends PdfObjectBase
 
 			if  ( $layout_option  ===  self::PDFOPT_RAW_LAYOUT )
 			   {
+				//If the page has a font map, use the first font as the page default
+				if (isset($this -> PageMap -> PageAttributes[$page_number]['fonts']) && count($this -> PageMap -> PageAttributes[$page_number]['fonts']) > 1)
+					$current_font 		=  reset ( $this -> PageMap -> PageAttributes [ $page_number ][ 'fonts' ] ) ;
+				else
+					$current_font 		=  -1 ;
+				
 				foreach  ( $page_objects  as  $page_object ) 
 				   {
 					if  ( isset ( $text [ $page_object ] ) )
@@ -4041,8 +4047,8 @@ class  PdfToText 	extends PdfObjectBase
 
 				// 'ET' : we have to reset a few things here
 				case	'ET' :
-					$current_font			=  -1 ;
-					$current_font_map_width		=  2 ;
+					//$current_font			=  -1 ;
+					//$current_font_map_width		=  2 ;
 					break ;
 			    }
 
