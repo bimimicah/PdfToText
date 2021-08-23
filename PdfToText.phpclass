@@ -7097,9 +7097,15 @@ class  PdfTexterFont		extends PdfObjectBase
 	   {
 		if  ( $this -> CharacterMap )
 		   {
+			// a /ToUnicode map directly maps to Unicode character points, so if the character exists, use it
+			if ( isset ( $this -> CharacterMap [ $ch ] )  &&  $this -> FontType === PdfTexterFont::FONT_ENCODING_UNICODE_MAP  &&  get_class($this->CharacterMap) == "PdfTexterUnicodeMap" )
+			   {
+				$code	=  $this -> CharacterMap [ $ch ] ;
+				return ( $code ) ;
+			   	}
 			// Character is defined in the character map ; check if it has been overridden by a /Differences array in
 			// a secondary character map
-			if  ( isset ( $this -> CharacterMap [ $ch ] ) )
+			else if  ( isset ( $this -> CharacterMap [ $ch ] ) )
 			   {
 				// Since a /ToUnicode map can have an associated /Encoding map with a /Differences list, this is the right place
 				// to perform the translation (ie, the final Unicode codepoint is impacted by the /Differences list)
